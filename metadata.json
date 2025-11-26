@@ -1,0 +1,7 @@
+{
+  "name": "MapScraper Pro",
+  "description": "Automated Google Maps data collection tool using AI to extract and export business leads to CSV.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
