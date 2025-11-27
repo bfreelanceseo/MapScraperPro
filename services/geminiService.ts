@@ -22,7 +22,7 @@ export const searchPlaces = async (
     Rules:
     1. Find at least 10-20 relevant results if possible.
     2. The output MUST be a Markdown table.
-    3. The table MUST have these columns: Name, Address, Rating, Review Count, Phone, Website.
+    3. The table MUST have these columns: Name, Phone.
     4. If specific data is missing for a row, put "N/A".
     5. Do not include any conversational text before or after the table. Only the table.
     6. Ensure the data is accurate based on the Google Maps tool grounding.
@@ -60,7 +60,7 @@ export const searchPlaces = async (
     promptText += `. IMPORTANT: Do NOT include these businesses in the results: ${namesToExclude}. Find DIFFERENT businesses not listed here.`;
   }
 
-  promptText += `. Provide a list with Name, Address, Rating, Review Count, Phone, and Website.`;
+  promptText += `. Provide a list with Name and Phone.`;
 
   try {
     const response = await ai.models.generateContent({

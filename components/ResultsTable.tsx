@@ -1,6 +1,6 @@
 import React from 'react';
 import { BusinessLead } from '../types';
-import { Star, Globe, Phone, MapPin } from 'lucide-react';
+import { Phone } from 'lucide-react';
 
 interface ResultsTableProps {
   data: BusinessLead[];
@@ -15,10 +15,8 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({ data }) => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50 z-10">Name</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50 z-10">Rating</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50 z-10">Address</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50 z-10">Contact</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50 z-10 w-2/3">Name</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50 z-10 w-1/3">Phone</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -31,39 +29,17 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({ data }) => {
                     </div>
                     <div className="ml-4">
                       <div className="text-sm font-medium text-gray-900">{row.name}</div>
-                      <div className="text-xs text-gray-500 flex items-center gap-1">
-                        {row.website !== 'N/A' && row.website !== '' ? (
-                           <a href={row.website} target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline flex items-center gap-1">
-                             <Globe className="w-3 h-3" /> Website
-                           </a>
-                        ) : null}
-                      </div>
                     </div>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                    <span className="text-sm text-gray-900 font-medium">{row.rating}</span>
-                    <span className="text-xs text-gray-500">({row.reviews})</span>
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-600 break-words line-clamp-2 max-w-xs" title={row.address}>
-                      {row.address}
-                    </span>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {row.phone !== 'N/A' && row.phone !== '' ? (
+                  {row.phone && row.phone !== 'N/A' && row.phone !== '' ? (
                     <div className="flex items-center text-sm text-gray-600 gap-2">
                       <Phone className="w-4 h-4 text-gray-400" />
                       {row.phone}
                     </div>
                   ) : (
-                    <span className="text-xs text-gray-400 italic">No phone</span>
+                    <span className="text-sm text-gray-400">N/A</span>
                   )}
                 </td>
               </tr>

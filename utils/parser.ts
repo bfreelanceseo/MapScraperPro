@@ -77,8 +77,8 @@ export const parseMarkdownTable = (markdown: string): BusinessLead[] => {
 export const convertToCSV = (data: BusinessLead[]): string => {
   if (data.length === 0) return '';
   
-  const headers = ['Name', 'Address', 'Rating', 'Reviews', 'Phone', 'Website'];
-  const keys = ['name', 'address', 'rating', 'reviews', 'phone', 'website'];
+  const headers = ['Name', 'Phone'];
+  const keys = ['name', 'phone'];
   
   const csvRows = [headers.join(',')];
   
