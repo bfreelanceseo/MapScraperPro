@@ -94,3 +94,13 @@ export const convertToCSV = (data: BusinessLead[]): string => {
   
   return csvRows.join('\n');
 };
+
+/**
+ * Prepares data for Excel export by selecting only relevant columns.
+ */
+export const prepareDataForExport = (data: BusinessLead[]): any[] => {
+  return data.map(row => ({
+    Name: row.name,
+    Phone: row.phone
+  }));
+};

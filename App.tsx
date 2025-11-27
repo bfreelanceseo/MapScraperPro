@@ -4,9 +4,10 @@ import { SearchForm } from './components/SearchForm';
 import { ResultsTable } from './components/ResultsTable';
 import { Documentation } from './components/Documentation';
 import { searchPlaces } from './services/geminiService';
-import { parseMarkdownTable, convertToCSV } from './utils/parser';
+import { parseMarkdownTable, convertToCSV, prepareDataForExport } from './utils/parser';
 import { BusinessLead, GeoLocation } from './types';
 import { AlertCircle, FileSpreadsheet, Copy, Database, RefreshCw, ChevronDown, Maximize2, Minimize2, Trash2 } from 'lucide-react';
+import { utils as xlsxUtils, writeFile } from 'xlsx';
 
 // Keep track of the parameters used for the current set of results
 interface SearchParams {
@@ -117,19 +118,29 @@ const App: React.FC = () => {
     activeSearchRef.current = null;
   };
 
-  const handleDownload = (format: 'csv') => {
+  const handleDownload = (format: 'csv' | 'xlsx') => {
     if (results.length === 0) return;
     
-    const csvContent = convertToCSV(results);
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', `map_leads_${new Date().toISOString().slice(0, 10)}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const filename = `map_leads_${new Date().toISOString().slice(0, 10)}`;
+
+    if (format === 'csv') {
+      const csvContent = convertToCSV(results);
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `${filename}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else if (format === 'xlsx') {
+      const exportData = prepareDataForExport(results);
+      const ws = xlsxUtils.json_to_sheet(exportData);
+      const wb = xlsxUtils.book_new();
+      xlsxUtils.book_append_sheet(wb, ws, "Leads");
+      writeFile(wb, `${filename}.xlsx`);
+    }
   };
 
   const copyToClipboard = () => {
@@ -146,7 +157,7 @@ const App: React.FC = () => {
           <span className="text-primary-600">Maps Data Collection</span>
         </h1>
         <p className="mt-5 max-w-xl mx-auto text-xl text-gray-500">
-          Export business leads, restaurants, and places directly to CSV in seconds using AI-powered grounding.
+          Export business leads, restaurants, and places directly to CSV or Excel in seconds using AI-powered grounding.
         </p>
       </div>
 
@@ -233,7 +244,15 @@ const App: React.FC = () => {
                 className="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors disabled:opacity-50"
               >
                 <FileSpreadsheet className="mr-2 h-4 w-4" />
-                Export CSV
+                CSV
+              </button>
+              <button
+                onClick={() => handleDownload('xlsx')}
+                disabled={isLoadingMore}
+                className="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors disabled:opacity-50"
+              >
+                <FileSpreadsheet className="mr-2 h-4 w-4" />
+                Excel
               </button>
             </div>
           </div>
