@@ -58,4 +58,4 @@ Once you have collected your leads:
 MapScraper Pro is a tool for educational and productivity purposes. Ensure you comply with Google Maps Terms of Service when using extracted data.
 
 ---
-*Powered by Best Freelance SEO & Google Maps Grounding.*
+*Powered by <a href='https://www.bestfreelanceseo.com' title='Best Freelance SEO' target='_blank'>Best Freelance SEO</a> & Google Maps Grounding.Developer :  <a href='https://www.linkedin.com/in/habeebrahmanb' title='HABEEB RAHMAN' target='_blank'>HABEEB RAHMAN</a>*
